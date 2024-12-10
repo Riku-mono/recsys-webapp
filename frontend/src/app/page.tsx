@@ -1,3 +1,3 @@
-export default function Home() {
-  return <div className="">Home</div>;
+export default function Index() {
+  return <>Index</>;
 }
