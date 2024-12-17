@@ -3,6 +3,8 @@ import localFont from 'next/font/local';
 import './globals.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { Suspense } from 'react';
+import Loading from './loading';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -32,7 +34,9 @@ export default function RootLayout({
       >
         <div className="flex min-h-screen flex-col">
           <Header />
-          <main className="flex-grow">{children}</main>
+          <main className="flex-grow">
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+          </main>
           <Footer />
         </div>
       </body>
