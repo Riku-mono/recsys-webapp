@@ -7,3 +7,8 @@ export type Movie = {
   imdb_id: number;
   tmdb_id: number;
 };
+
+// API Context
+export type ApiContext = {
+  apiRootUrl: string | undefined;
+};
