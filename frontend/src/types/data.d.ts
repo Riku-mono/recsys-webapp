@@ -8,6 +8,12 @@ export type Movie = {
   tmdb_id: number;
 };
 
+// ユーザ
+export type User = {
+  id: string;
+  email: string;
+};
+
 // API Context
 export type ApiContext = {
   apiRootUrl: string | undefined;
