@@ -1,0 +1,171 @@
+{
+  "movies": [
+    {
+      "id": "1",
+      "title": "Toy Story",
+      "year": 1995,
+      "genres": ["Adventure", "Animation", "Children", "Comedy", "Fantasy"],
+      "imdb_id": 114709,
+      "tmdb_id": 862,
+      "rating": {
+        "id": "00000000-0000-0000-0000-000000000000_000001",
+        "user_id": "00000000-0000-0000-0000-000000000000",
+        "movie_id": 1,
+        "rating": 4.5,
+        "rated_at": "0000-00-00 00:00:00"
+      }
+    },
+    {
+      "id": "2",
+      "title": "Jumanji",
+      "year": 1995,
+      "genres": ["Adventure", "Children", "Fantasy"],
+      "imdb_id": 113497,
+      "tmdb_id": 8844,
+      "rating": {
+        "id": "00000000-0000-0000-0000-000000000000_000002",
+        "user_id": "00000000-0000-0000-0000-000000000000",
+        "movie_id": 1,
+        "rating": 3.5,
+        "rated_at": "0000-00-00 00:00:00"
+      }
+    },
+    {
+      "id": "3",
+      "title": "Grumpier Old Men",
+      "year": 1995,
+      "genres": ["Comedy", "Romance"],
+      "imdb_id": 113228,
+      "tmdb_id": 15602
+    },
+    {
+      "id": "4",
+      "title": "Waiting to Exhale",
+      "year": 1995,
+      "genres": ["Comedy", "Drama", "Romance"],
+      "imdb_id": 114885,
+      "tmdb_id": 31357
+    },
+    {
+      "id": "5",
+      "title": "Father of the Bride Part II",
+      "year": 1995,
+      "genres": ["Comedy"],
+      "imdb_id": 113041,
+      "tmdb_id": 11862
+    },
+    {
+      "id": "6",
+      "title": "Heat",
+      "year": 1995,
+      "genres": ["Action", "Crime", "Thriller"],
+      "imdb_id": 113277,
+      "tmdb_id": 949,
+      "rating": {
+        "id": "00000000-0000-0000-0000-000000000000_000006",
+        "user_id": "00000000-0000-0000-0000-000000000000",
+        "movie_id": 1,
+        "rating": 2,
+        "rated_at": "0000-00-00 00:00:00"
+      }
+    },
+    {
+      "id": "7",
+      "title": "Sabrina",
+      "year": 1995,
+      "genres": ["Comedy", "Romance"],
+      "imdb_id": 114319,
+      "tmdb_id": 11860
+    },
+    {
+      "id": "8",
+      "title": "Tom and Huck",
+      "year": 1995,
+      "genres": ["Adventure", "Children"],
+      "imdb_id": 112302,
+      "tmdb_id": 45325
+    },
+    {
+      "id": "9",
+      "title": "Sudden Death",
+      "year": 1995,
+      "genres": ["Action"],
+      "imdb_id": 114576,
+      "tmdb_id": 9091
+    },
+    {
+      "id": "10",
+      "title": "GoldenEye",
+      "year": 1995,
+      "genres": ["Action", "Adventure", "Thriller"],
+      "imdb_id": 113189,
+      "tmdb_id": 710
+    },
+    {
+      "id": "11",
+      "title": "American President, The",
+      "year": 1995,
+      "genres": ["Comedy", "Drama", "Romance"],
+      "imdb_id": 112346,
+      "tmdb_id": 9087
+    },
+    {
+      "id": "12",
+      "title": "Dracula: Dead and Loving It",
+      "year": 1995,
+      "genres": ["Comedy", "Horror"],
+      "imdb_id": 112896,
+      "tmdb_id": 12110
+    },
+    {
+      "id": "13",
+      "title": "Balto",
+      "year": 1995,
+      "genres": ["Adventure", "Animation", "Children"],
+      "imdb_id": 112453,
+      "tmdb_id": 21032
+    },
+    {
+      "id": "14",
+      "title": "Nixon",
+      "year": 1995,
+      "genres": ["Drama"],
+      "imdb_id": 113987,
+      "tmdb_id": 10858
+    },
+    {
+      "id": "15",
+      "title": "Cutthroat Island",
+      "year": 1995,
+      "genres": ["Action", "Adventure", "Romance"],
+      "imdb_id": 112760,
+      "tmdb_id": 1408
+    },
+    {
+      "id": "16",
+      "title": "Casino",
+      "year": 1995,
+      "genres": ["Crime", "Drama"],
+      "imdb_id": 112641,
+      "tmdb_id": 524
+    },
+    {
+      "id": "17",
+      "title": "Sense and Sensibility",
+      "year": 1995,
+      "genres": ["Drama", "Romance"],
+      "imdb_id": 114388,
+      "tmdb_id": 4584
+    },
+    {
+      "id": "18",
+      "title": "Four Rooms",
+      "year": 1995,
+      "genres": ["Comedy"],
+      "imdb_id": 113101,
+      "tmdb_id": 5
+    }
+  ],
+  "users": [],
+  "ratings": []
+}
