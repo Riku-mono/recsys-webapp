@@ -1,6 +1,6 @@
 'use client';
 
-import { Movie } from '@/types/data';
+import { Movie, User } from '@/types/data';
 import MovieCard from './MovieCard';
 import { useEffect, useState } from 'react';
 
@@ -8,6 +8,7 @@ type Props = {
   phrase: string;
   movies: Movie[];
   perPage: number;
+  user: User;
 };
 
 export default function MovieList(props: Props) {
@@ -29,6 +30,17 @@ export default function MovieList(props: Props) {
     setCurrentPage(page);
   };
 
+  const handleRatingClick = (movie: Movie) => {
+    const movies_ = movies.map((movie_) => {
+      let movie__ =
+        movie_.id == movie.id
+          ? JSON.parse(JSON.stringify(movie))
+          : JSON.parse(JSON.stringify(movie_));
+      return movie__;
+    });
+    setMovies(movies_);
+  };
+
   return (
     <>
       <div className="text-xl">{props.phrase}</div>
@@ -39,7 +51,14 @@ export default function MovieList(props: Props) {
         >
           ＜
         </button>
-        {currentMovies?.map((movie) => <MovieCard key={movie.id} movie={movie} />)}
+        {currentMovies?.map((movie) => (
+          <MovieCard
+            key={movie.id}
+            movie={movie}
+            user={props.user}
+            handleRatingClick={handleRatingClick}
+          />
+        ))}
         <button
           className="rounded-md border-2 border-gray-200 text-gray-800 hover:bg-gray-100 active:border-gray-300 active:bg-gray-200"
           onClick={() => handlePageChange(currentPage + 1)}
