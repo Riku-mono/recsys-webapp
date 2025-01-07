@@ -2,3 +2,4 @@ __pycache__/
 manage.py
 config/settings/
 migrations/
+*.env*
