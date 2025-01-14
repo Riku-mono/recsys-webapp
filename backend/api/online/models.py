@@ -72,3 +72,30 @@ class User(models.Model):
 
     def __str__(self):
         return '{}:{}'.format(self.id, self.email)
+
+class Rating(models.Model):
+    """評価値モデル
+
+    Attributes
+    ----------
+    id : TextField
+        評価値ID
+    user : ForeignKey[User]
+        対象ユーザ
+    movie : ForeignKey[Movie]
+        対象映画
+    rating : IntegerField
+        評価値
+    """
+    id = models.TextField(primary_key=True, max_length=43)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, related_name='movie_ratings', on_delete=models.CASCADE)
+    rating = models.FloatField(blank=False, null=False)
+    rated_at = models.DateTimeField(blank=False, null=False, auto_now=True)
+
+    class Meta:
+        managed = True
+        db_table = 'ratings'
+
+    def __str__(self):
+        return '{}:{}:{}:{}'.format(self.id, self.user.id, self.movie.id, self.rating)

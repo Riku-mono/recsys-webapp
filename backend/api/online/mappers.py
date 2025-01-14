@@ -26,3 +26,18 @@ class UserMapper:
             'id': user.id,
             'email': user.email,
         }
+
+class RatingMapper:
+  def __init__(self, obj):
+    self.obj = obj
+
+  def as_dict(self):
+    rating = self.obj
+    
+    return {
+      'id': rating.id,
+      'user_id': rating.user.id,
+      'movie_id': rating.movie.id,
+      'rating': rating.rating,
+      'rated_at': rating.rated_at,
+    }

@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Movie, User
-from .mappers import MovieMapper, UserMapper
+from .models import Movie, User, Rating
+from .mappers import MovieMapper, UserMapper, RatingMapper
 from rest_framework import status
 
 
@@ -84,3 +84,55 @@ class UserView(APIView):
         user.save()
         user_dict = UserMapper(user).as_dict()
         return Response(user_dict, status.HTTP_201_CREATED)
+
+class RatingView(APIView):
+    """評価値ビュークラス
+    """
+
+    def get(self, request, format=None):
+        """評価値を取得する。
+
+        Requests
+        --------
+        id : str
+            評価値ID
+
+        Returns
+        -------
+        ratings_dict : Response
+            評価値リスト
+        """
+        id = request.GET.get('id')
+        ratings = Rating.objects.filter(id=id)
+        ratings_dict = [RatingMapper(rating).as_dict() for rating in ratings]
+        return Response(ratings_dict, status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        """評価値を登録する。
+
+        Requests
+        --------
+        id : str
+            評価値ID
+        user_id : str
+            ユーザID
+        movie_id : int
+            映画ID
+        rating : float
+            評価値
+
+        Returns
+        -------
+        rating_dict : Response
+            評価値
+        """
+        id = request.data['id']
+        user_id = request.data['user_id']
+        movie_id = request.data['movie_id']
+        rating = request.data['rating']
+        user = User.objects.get(pk=user_id)
+        movie = Movie.objects.get(pk=movie_id)
+        rating_model = Rating(id=id, user=user, movie=movie, rating=rating)
+        rating_model.save()
+        rating_dict = RatingMapper(rating_model).as_dict()
+        return Response(rating_dict, status.HTTP_201_CREATED)
