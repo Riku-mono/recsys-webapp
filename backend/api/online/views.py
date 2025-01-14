@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Movie
-from .mappers import MovieMapper
+from .models import Movie, User
+from .mappers import MovieMapper, UserMapper
 from rest_framework import status
 
 
@@ -37,3 +37,50 @@ class MovieView(APIView):
         movie = Movie.objects.get(pk=id)
         movie_dict = MovieMapper(movie).as_dict()
         return Response(movie_dict, status.HTTP_200_OK)
+
+class UserView(APIView):
+    """
+    ユーザビュークラス
+    """
+
+    def get(self, request, format=None):
+        """
+        ユーザを取得する。
+        
+        Requests
+        --------
+        email : str
+            メールアドレス
+
+        Returns
+        -------
+        users_dict : Response
+            ユーザリスト
+        """
+        email = request.GET.get('email')
+        users = User.objects.filter(email=email)
+        users_dict = [UserMapper(user).as_dict() for user in users]
+        return Response(users_dict, status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        """
+        ユーザを登録する。
+
+        Requests
+        --------
+        id : str
+            ユーザID
+        email : str
+            メールアドレス
+
+        Returns
+        -------
+        users_dict : Response
+            ユーザリスト
+        """
+        id = request.data['id']
+        email = request.data['email']
+        user = User(id=id, email=email)
+        user.save()
+        user_dict = UserMapper(user).as_dict()
+        return Response(user_dict, status.HTTP_201_CREATED)

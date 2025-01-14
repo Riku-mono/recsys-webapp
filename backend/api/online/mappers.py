@@ -14,3 +14,15 @@ class MovieMapper:
             'imdb_id': movie.imdb_id,
             'tmdb_id': movie.tmdb_id,
         }
+    
+class UserMapper:
+    def __init__(self, obj):
+        self.obj = obj
+
+    def as_dict(self):
+        user = self.obj
+        
+        return {
+            'id': user.id,
+            'email': user.email,
+        }

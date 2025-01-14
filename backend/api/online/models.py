@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 
 class Genre(models.Model):
@@ -51,3 +52,23 @@ class Movie(models.Model):
 
     def __str__(self):
         return '{}:{}({})'.format(self.id, self.title, self.year, self.genres, self.imdb_id, self.tmdb_id)
+
+class User(models.Model):
+    """ユーザモデル
+
+    Attributes
+    ----------
+    id : UUIDField
+        ユーザID
+    email : EmailField
+        emailアドレス
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(max_length=254, blank=False, null=False, unique=True)
+
+    class Meta:
+        managed = True
+        db_table = 'users'
+
+    def __str__(self):
+        return '{}:{}'.format(self.id, self.email)
