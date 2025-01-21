@@ -4,6 +4,7 @@ import { Movie, User } from '@/types/data';
 import MovieCard from './MovieCard';
 import { useEffect, useState } from 'react';
 import deleteRating from '@/services/ratings/deleteRating';
+import getOMDbMovie from '@/services/omdbApi/getOMDbMovie';
 
 type Props = {
   phrase: string;
@@ -17,6 +18,7 @@ export default function MovieList(props: Props) {
   const [movies, setMovies] = useState<Movie[]>(props.movies);
   const [currentMovies, setCurrentMovies] = useState<Movie[]>();
   const [currentPage, setCurrentPage] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (movies.length <= 0) {
@@ -36,6 +38,23 @@ export default function MovieList(props: Props) {
 
     setCurrentMovies(currentMovies_);
   }, [movies, currentPage]);
+
+  useEffect(() => {
+    const func = async () => {
+      const movies_ = await Promise.all(
+        movies.map(async (movie) => {
+          const movie_ = JSON.parse(JSON.stringify(movie));
+          movie_.omdbMovie = await getOMDbMovie(movie);
+          return movie_;
+        })
+      );
+      setMovies(movies_);
+    };
+
+    setLoading(true);
+    func();
+    setLoading(false);
+  }, [currentPage]);
 
   const handlePageChange = (page: number) => {
     page = page < 0 ? Math.max(Math.floor((movies.length - 1) / props.perPage), 0) : page;
@@ -70,16 +89,24 @@ export default function MovieList(props: Props) {
         >
           ＜
         </button>
-        {currentMovies?.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            movie={movie}
-            user={props.user}
-            isMyList={props.isMyList}
-            handleRatingClick={handleRatingClick}
-            handleDelete={handleDelete}
-          />
-        ))}
+        {loading ? (
+          <div className="flex items-center justify-center">
+            <div className="h-12 w-12 animate-spin rounded-full border-t-4 border-blue-500"></div>
+          </div>
+        ) : (
+          <>
+            {currentMovies?.map((movie) => (
+              <MovieCard
+                movie={movie}
+                key={movie.id}
+                user={props.user}
+                isMyList={props.isMyList}
+                handleRatingClick={handleRatingClick}
+                handleDelete={handleDelete}
+              />
+            ))}
+          </>
+        )}
         <button
           className="rounded-md border-2 border-gray-200 text-gray-800 hover:bg-gray-100 active:border-gray-300 active:bg-gray-200"
           onClick={() => handlePageChange(currentPage + 1)}

@@ -38,7 +38,11 @@ export default function MovieCardDetail(props: Props) {
       <article key={props.movie.id}>
         <div className="mx-4 my-4 flex">
           <div className="hidden flex-shrink-0 md:block">
-            <Image src="/dummy_poster.png" alt="" width={150} height={224} />
+            {props.movie.omdbMovie ? (
+              <Image src={props.movie.omdbMovie.poster} alt="" width={150} height={224} />
+            ) : (
+              <Image src="/dummy_poster.png" alt="" width={150} height={224} />
+            )}
           </div>
           <div className="ml-6">
             <div>

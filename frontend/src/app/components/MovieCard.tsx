@@ -30,7 +30,11 @@ export default function MovieCard(props: Props) {
     <>
       <article className="h-72 w-32 shadow" key={props.movie.id}>
         <Link href={`/movies/${props.movie.id}`} className="hover:opacity-75">
-          <Image src="/dummy_poster.png" alt="dummy" width={120} height={180} />
+          {props.movie.omdbMovie ? (
+            <Image src={props.movie.omdbMovie.poster} alt="" width={120} height={180} />
+          ) : (
+            <Image src="/dummy_poster.png" alt="" width={120} height={180} />
+          )}
         </Link>
         {props.user ? (
           <StarRating

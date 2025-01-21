@@ -7,6 +7,7 @@ export type Movie = {
   imdb_id: number;
   tmdb_id: number;
   rating: Rating;
+  omdbMovie: OMDbMovie | undefined;
 };
 
 // ユーザ
@@ -24,7 +25,23 @@ export type Rating = {
   rated_at: string;
 };
 
+// OMDb映画
+export type OMDbMovie = {
+  title: string;
+  poster: string;
+  director: string;
+  writer: string;
+  actors: string;
+  plot: string;
+}
+
 // API Context
 export type ApiContext = {
   apiRootUrl: string | undefined;
+};
+
+// OMDb API Context
+export type OMDbApiContext = {
+  apiRootUrl: string | undefined;
+  apiKey: string | undefined;
 };
