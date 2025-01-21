@@ -12,7 +12,7 @@ export default async function Index() {
   await connectUser();
   const session = await auth();
   const user = session ? await getUser(session?.user?.email!) : null;
-  const movies = await getMovies();
+  const movies = await getMovies(user!);
 
   return (
     <>

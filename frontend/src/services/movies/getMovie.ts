@@ -1,4 +1,4 @@
-import { ApiContext, Movie } from '@/types/data';
+import { ApiContext, Movie, User } from '@/types/data';
 import { fetcher } from '@/utils';
 
 const context: ApiContext = {
@@ -8,10 +8,12 @@ const context: ApiContext = {
 /**
  * 映画取得API
  * @param movieId 映画ID
+ * @param user ユーザー
  * @returns 映画
  */
-export default async function getMovie(movieId: number): Promise<Movie> {
-  return await fetcher(`${context.apiRootUrl?.replace(/\/$/g, '')}/movies/${movieId}/`, {
+export default async function getMovie(movieId: number, user?: User): Promise<Movie> {
+  const userParam = user ? `?user_id=${user.id}` : '';
+  return await fetcher(`${context.apiRootUrl?.replace(/\/$/g, '')}/movies/${movieId}/` + userParam, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

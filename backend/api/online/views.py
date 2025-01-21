@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from .models import Movie, User, Rating
 from .mappers import MovieMapper, UserMapper, RatingMapper
 from rest_framework import status
+from django.db.models import Prefetch
 
 
 class MoviesView(APIView):
@@ -17,8 +18,17 @@ class MoviesView(APIView):
         movies_dict : Response
             映画リスト
         """
-        movies = Movie.objects.order_by('?')[:20]
-        movies_dict = [MovieMapper(movie).as_dict() for movie in movies]
+        user_id = None
+        movies = []
+        if 'user_id' in request.GET:
+            user_id = request.GET.get('user_id')
+            movies = Movie.objects.order_by('?')[:20].prefetch_related(
+                Prefetch('movie_ratings', queryset=Rating.objects.filter(user_id=user_id))
+            )
+        else:
+            movies = Movie.objects.order_by('?')[:20]
+            
+        movies_dict = [MovieMapper(movie).as_dict(user_id) for movie in movies]
         return Response(movies_dict, status.HTTP_200_OK)
 
 class MovieView(APIView):
@@ -34,8 +44,17 @@ class MovieView(APIView):
         movie_dict : Response
             映画
         """
-        movie = Movie.objects.get(pk=id)
-        movie_dict = MovieMapper(movie).as_dict()
+        user_id = None
+        movie = {}
+        if 'user_id' in request.GET:
+            user_id = request.GET.get('user_id')
+            movie = Movie.objects.filter(id=id).prefetch_related(
+                Prefetch('movie_ratings', queryset=Rating.objects.filter(user_id=user_id))
+            ).first()
+        else:
+            movie = Movie.objects.get(pk=id)
+          
+        movie_dict = MovieMapper(movie).as_dict(user_id)
         return Response(movie_dict, status.HTTP_200_OK)
 
 class UserView(APIView):

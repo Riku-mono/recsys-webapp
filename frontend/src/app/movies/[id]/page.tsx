@@ -11,7 +11,7 @@ export default async function Movie({ params }: { params: { id: number } }) {
   const session = await auth();
   const user = session ? await getUser(session.user?.email!) : null;
   const movieId = Number(params.id);
-  const movie = await getMovie(movieId);
+  const movie = await getMovie(movieId, user!);
 
   return (
     <>
