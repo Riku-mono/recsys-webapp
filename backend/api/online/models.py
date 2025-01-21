@@ -128,3 +128,32 @@ class ReclistPopularity(models.Model):
 
     def __str__(self):
         return '{}:{}:{}'.format(self.target_genre.id, self.rank, self.movie.id, self.score)
+
+class ReclistMoviesMovies(models.Model):
+    """映画-映画類似度ベース推薦システムによる推薦リストモデル
+
+    Attributes
+    ----------
+    id : IntegerField
+        推薦リストID
+    base_movie : ForeignKey[Movie]
+        ベース映画
+    rank : IntegerField
+        推薦順位
+    movie : ForeignKey[Movie]
+        推薦映画
+    score : FloatField
+        推薦スコア
+    """
+    id = models.TextField(primary_key=True, max_length=5)
+    base_movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='base_movie_movies')
+    rank = models.IntegerField(blank=False, null=False)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='movie_movies')
+    score = models.FloatField()
+
+    class Meta:
+        managed = True
+        db_table = 'reclist_movies_movies'
+
+    def __str__(self):
+        return '{}:{}:{}'.format(self.id, self.base_movie.id, self.rank, self.movie.id, self.score)

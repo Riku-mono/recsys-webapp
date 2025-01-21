@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Movie, User, Rating
-from .models import ReclistPopularity
+from .models import ReclistPopularity, ReclistMoviesMovies
 from .mappers import MovieMapper, UserMapper, RatingMapper
 from rest_framework import status
 from django.db.models import Prefetch
@@ -189,6 +189,43 @@ class MoviesPopularityView(APIView):
                 ).all()
         else:
             reclist = ReclistPopularity.objects.filter(target_genre_id=target_genre_id)
+
+        movies = [rec.movie for rec in reclist]
+        movies_dict = [MovieMapper(movie).as_dict(user_id) for movie in movies]
+        return Response(movies_dict, status.HTTP_200_OK)
+
+class MoviesMoviesMoviesView(APIView):
+    """映画-映画類似度ベース推薦システムによる推薦リストビュークラス
+    """
+
+    def get(self, request, format=None):
+        """ベース映画とのアイテム類似度に基づく推薦リストを取得する。
+
+        Requests
+        --------
+        base_movie_id : int
+            ベース映画ID
+        user_id : str
+            ユーザID
+
+        Returns
+        -------
+        movies_dict : Response
+            映画リスト
+        """
+        base_movie_id = request.GET.get('base_movie_id')
+
+        user_id = None
+        reclist = []
+        if 'user_id' in request.GET:
+            user_id = request.GET.get('user_id')
+            reclist = ReclistMoviesMovies.objects.filter(base_movie_id=base_movie_id)\
+                .prefetch_related('movie')\
+                .prefetch_related(
+                    Prefetch('movie__movie_ratings', queryset=Rating.objects.filter(user_id=user_id))
+                ).all()
+        else:
+            reclist = ReclistMoviesMovies.objects.filter(base_movie_id=base_movie_id)
 
         movies = [rec.movie for rec in reclist]
         movies_dict = [MovieMapper(movie).as_dict(user_id) for movie in movies]
