@@ -3,12 +3,14 @@
 import { Movie, User } from '@/types/data';
 import MovieCard from './MovieCard';
 import { useEffect, useState } from 'react';
+import deleteRating from '@/services/ratings/deleteRating';
 
 type Props = {
   phrase: string;
   movies: Movie[];
   perPage: number;
   user: User;
+  isMyList?: boolean;
 };
 
 export default function MovieList(props: Props) {
@@ -17,9 +19,20 @@ export default function MovieList(props: Props) {
   const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
+    if (movies.length <= 0) {
+      setCurrentMovies(movies);
+    }
+
     const start = currentPage * props.perPage;
     const end = start + props.perPage;
     const currentMovies_ = movies.slice(start, end);
+
+    if (currentMovies_.length <= 0) {
+      let currentPage_ = currentPage <= 0 ? 0 : currentPage - 1;
+      setCurrentPage(currentPage_);
+    } else {
+      setCurrentMovies(currentMovies_);
+    }
 
     setCurrentMovies(currentMovies_);
   }, [movies, currentPage]);
@@ -28,6 +41,12 @@ export default function MovieList(props: Props) {
     page = page < 0 ? Math.max(Math.floor((movies.length - 1) / props.perPage), 0) : page;
     page = page >= Math.ceil(movies.length / props.perPage) ? 0 : page;
     setCurrentPage(page);
+  };
+
+  const handleDelete = async (movie: Movie) => {
+    await deleteRating(props.user, movie);
+    const movies_ = movies.filter((movie_) => movie_.id != movie.id);
+    setMovies(movies_);
   };
 
   const handleRatingClick = (movie: Movie) => {
@@ -56,7 +75,9 @@ export default function MovieList(props: Props) {
             key={movie.id}
             movie={movie}
             user={props.user}
+            isMyList={props.isMyList}
             handleRatingClick={handleRatingClick}
+            handleDelete={handleDelete}
           />
         ))}
         <button

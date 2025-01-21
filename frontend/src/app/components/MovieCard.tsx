@@ -4,13 +4,17 @@ import Link from 'next/link';
 import StarRating from './StarRating';
 import postRating from '@/services/ratings/postRating';
 import getRating from '@/services/ratings/getRating';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { IconButton } from '@mui/material';
 
 const STAR_WIDTH = 24;
 
 type Props = {
   movie: Movie;
   user: User;
+  isMyList?: boolean;
   handleRatingClick: Function;
+  handleDelete?: Function;
 };
 
 export default function MovieCard(props: Props) {
@@ -45,6 +49,13 @@ export default function MovieCard(props: Props) {
             <div className="my-1 rounded bg-gray-200 px-1 py-0.5 text-sm text-gray-800">
               {props.movie.year}
             </div>
+            {props.isMyList == true ? (
+              <IconButton onClick={() => props.handleDelete!(props.movie)}>
+                <HighlightOffIcon className="text-sm" />
+              </IconButton>
+            ) : (
+              <></>
+            )}{' '}
           </div>
         </div>
       </article>

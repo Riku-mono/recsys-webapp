@@ -156,6 +156,24 @@ class RatingView(APIView):
         rating_model.save()
         rating_dict = RatingMapper(rating_model).as_dict()
         return Response(rating_dict, status.HTTP_201_CREATED)
+    
+    def delete(self, request, format=None):
+        """評価値を削除する。
+
+        Requests
+        --------
+        id : str
+            評価値ID
+
+        Returns
+        -------
+        msg : Response
+            レスポンス
+        """
+        id = request.data['id']
+        rating_model = Rating.objects.get(pk=id)
+        rating_model.delete()
+        return Response({'msg': 'Rating was successfully deleted.'}, status.HTTP_200_OK)
 
 class MoviesPopularityView(APIView):
     """人気ベース推薦システムによる映画リストビュークラス

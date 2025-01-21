@@ -19,7 +19,13 @@ export default async function MyPage() {
     <>
       {session?.user ? (
         <>
-          <MovieList phrase={phrase} movies={movies} perPage={PER_PAGE} user={user!} />
+          <MovieList
+            phrase={phrase}
+            movies={movies}
+            perPage={PER_PAGE}
+            user={user!}
+            isMyList={true}
+          />
           {/* @ts-expect-error Server Component */}
           <MovieListBPR user={user!} perPage={PER_PAGE} />
         </>
