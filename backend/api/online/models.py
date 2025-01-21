@@ -157,3 +157,32 @@ class ReclistMoviesMovies(models.Model):
 
     def __str__(self):
         return '{}:{}:{}'.format(self.id, self.base_movie.id, self.rank, self.movie.id, self.score)
+
+class ReclistBPR(models.Model):
+    """BPRベース推薦システムによる推薦リストモデル
+
+    Attributes
+    ----------
+    id : IntegerField
+        推薦リストID
+    user : ForeignKey[User]
+        対象ユーザ
+    rank : IntegerField
+        推薦順位
+    movie : ForeignKey[Movie]
+        推薦映画
+    score : FloatField
+        推薦スコア
+    """
+    id = models.TextField(primary_key=True, max_length=5)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rank = models.IntegerField(blank=False, null=False)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    score = models.FloatField()
+
+    class Meta:
+        managed = True
+        db_table = 'reclist_bpr'
+
+    def __str__(self):
+        return '{}:{}:{}'.format(self.user.id, self.rank, self.movie.id, self.score)

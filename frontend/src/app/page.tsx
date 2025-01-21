@@ -6,6 +6,7 @@ import connectUser from '@/services/users/connectUser';
 import { auth } from '@/auth';
 import getUser from '@/services/users/getUser';
 import MovieListPopularity from './components/MovieListPopularity';
+import MovieListBPR from './components/MovieListBPR';
 
 const PER_PAGE = 5;
 const N_GENRES = 19;
@@ -24,6 +25,8 @@ export default async function Index() {
           <HelloAccount />
         </SessionProvider>
         <MovieList phrase="本日のおすすめ" movies={movies} perPage={PER_PAGE} user={user!} />
+        {/* @ts-expect-error Server Component */}
+        {session?.user ? <MovieListBPR perPage={PER_PAGE} user={user!} /> : <></>}
         {(() => {
           const genres = [...Array(N_GENRES)].map((_, i) => i + 1);
           genres.sort((a, b) => 0.5 - Math.random());

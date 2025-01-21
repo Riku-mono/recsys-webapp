@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Movie, User, Rating
-from .models import ReclistPopularity, ReclistMoviesMovies
+from .models import ReclistPopularity, ReclistMoviesMovies, ReclistBPR
 from .mappers import MovieMapper, UserMapper, RatingMapper
 from rest_framework import status
 from django.db.models import Prefetch
@@ -226,6 +226,37 @@ class MoviesMoviesMoviesView(APIView):
                 ).all()
         else:
             reclist = ReclistMoviesMovies.objects.filter(base_movie_id=base_movie_id)
+
+        movies = [rec.movie for rec in reclist]
+        movies_dict = [MovieMapper(movie).as_dict(user_id) for movie in movies]
+        return Response(movies_dict, status.HTTP_200_OK)
+
+class MoviesBPRView(APIView):
+    """BPRベース推薦システムによる推薦リストビュークラス
+    """
+
+    def get(self, request, format=None):
+        """BPRベース推薦システムによる推薦リストを取得する。
+
+        Requests
+        --------
+        user_id : str
+            ユーザID
+
+        Returns
+        -------
+        movies_dict : Response
+            映画リスト
+        """
+        user_id = None
+        reclist = []
+        if 'user_id' in request.GET:
+            user_id = request.GET.get('user_id')
+            reclist = ReclistBPR.objects.filter(user_id=user_id)\
+                .prefetch_related('movie')\
+                .prefetch_related(
+                    Prefetch('movie__movie_ratings', queryset=Rating.objects.filter(user_id=user_id))
+                ).all()
 
         movies = [rec.movie for rec in reclist]
         movies_dict = [MovieMapper(movie).as_dict(user_id) for movie in movies]
