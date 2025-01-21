@@ -55,7 +55,10 @@ export default function AccountMenu() {
           <Avatar /> Profile
         </MenuItem>
         <MenuItem onClick={handleClose}>
-          <Avatar /> <Link href="/myaccount">My account</Link>
+          <Avatar /> <Link href="/myaccount/">My account</Link>
+        </MenuItem>
+        <MenuItem>
+          <Avatar /> <Link href="/mypage/">My page</Link>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>

@@ -261,3 +261,33 @@ class MoviesBPRView(APIView):
         movies = [rec.movie for rec in reclist]
         movies_dict = [MovieMapper(movie).as_dict(user_id) for movie in movies]
         return Response(movies_dict, status.HTTP_200_OK)
+
+class MoviesRatedView(APIView):
+    """評価済み映画リストビュークラス
+    """
+
+    def get(self, request, format=None):
+        """対象ユーザの評価済み映画リストを取得する。
+        Requests
+        --------
+        user_id : str
+            ユーザID
+
+        Returns
+        -------
+        movies_dict : Response
+            映画リスト
+        """
+        user_id = None
+        reclist = []
+        if 'user_id' in request.GET:
+            user_id = request.GET.get('user_id')
+            reclist = Rating.objects.filter(user_id=user_id).order_by('-rated_at')\
+                .prefetch_related('movie')\
+                .prefetch_related(
+                    Prefetch('movie__movie_ratings', queryset=Rating.objects.filter(user_id=user_id))
+                ).all()
+
+        movies = [rec.movie for rec in reclist]
+        movies_dict = [MovieMapper(movie).as_dict(user_id) for movie in movies]
+        return Response(movies_dict, status.HTTP_200_OK)
