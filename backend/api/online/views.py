@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Movie, User, Rating
+from .models import ReclistPopularity
 from .mappers import MovieMapper, UserMapper, RatingMapper
 from rest_framework import status
 from django.db.models import Prefetch
@@ -155,3 +156,40 @@ class RatingView(APIView):
         rating_model.save()
         rating_dict = RatingMapper(rating_model).as_dict()
         return Response(rating_dict, status.HTTP_201_CREATED)
+
+class MoviesPopularityView(APIView):
+    """人気ベース推薦システムによる映画リストビュークラス
+    """
+
+    def get(self, request, format=None):
+        """対象ジャンルの人気ベース推薦リストを取得する。
+
+        Requests
+        --------
+        target_genre_id : int
+            対象ジャンルID
+        user_id : str
+            ユーザID
+
+        Returns
+        -------
+        movies_dict : Response
+            映画リスト
+        """
+        target_genre_id = request.GET.get('target_genre_id')
+
+        user_id = None
+        reclist = []
+        if 'user_id' in request.GET:
+            user_id = request.GET.get('user_id')
+            reclist = ReclistPopularity.objects.filter(target_genre_id=target_genre_id)\
+                .prefetch_related('movie')\
+                .prefetch_related(
+                    Prefetch('movie__movie_ratings', queryset=Rating.objects.filter(user_id=user_id))
+                ).all()
+        else:
+            reclist = ReclistPopularity.objects.filter(target_genre_id=target_genre_id)
+
+        movies = [rec.movie for rec in reclist]
+        movies_dict = [MovieMapper(movie).as_dict(user_id) for movie in movies]
+        return Response(movies_dict, status.HTTP_200_OK)

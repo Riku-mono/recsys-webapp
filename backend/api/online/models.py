@@ -99,3 +99,32 @@ class Rating(models.Model):
 
     def __str__(self):
         return '{}:{}:{}:{}'.format(self.id, self.user.id, self.movie.id, self.rating)
+    
+class ReclistPopularity(models.Model):
+    """人気ベース推薦システムによる推薦リストモデル
+
+    Attributes
+    ----------
+    id : IntegerField
+        推薦リストID
+    target_genre : ForeignKey[Genre]
+        対象ジャンル
+    rank : IntegerField
+        推薦順位
+    movie : ForeignKey[Movie]
+        推薦映画
+    score : FloatField
+        推薦スコア
+    """
+    id = models.TextField(primary_key=True, max_length=5)
+    target_genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
+    rank = models.IntegerField(blank=False, null=False)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    score = models.FloatField()
+
+    class Meta:
+        managed = True
+        db_table = 'reclist_popularity'
+
+    def __str__(self):
+        return '{}:{}:{}'.format(self.target_genre.id, self.rank, self.movie.id, self.score)
